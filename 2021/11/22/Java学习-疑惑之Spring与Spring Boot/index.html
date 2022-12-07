@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="ZYHWJL HEXO BLOG">
+    <meta name="description" content="zyhwjl的个人Hexo博客，记录个人技术学习、日常分享">
+    <meta name="author" content="ZYHWJL">
+    
+    <title>
+        
+            Java学习-疑惑之Spring与Spring Boot |
+        
+        ZYHWJL の BLOG
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="https://ae01.alicdn.com/kf/U062ad107ac604106bf77342c6219e2f9Z.jpg">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/fontawesome/css/regular.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/fontawesome/css/solid.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/fontawesome/css/brands.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"blog.zyhwjl.cn","root":"/","language":"zh-CN","path":"search.json"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066cc","favicon":"https://ae01.alicdn.com/kf/U062ad107ac604106bf77342c6219e2f9Z.jpg","avatar":"https://ae01.alicdn.com/kf/U062ad107ac604106bf77342c6219e2f9Z.jpg","font_size":null,"font_family":null,"hover":{"shadow":true,"scale":true},"first_screen":{"enable":true,"header_transparent":true,"background_img":"/images/bg.svg","description":"只要有你想要保护的东西，那就拔剑好了。","font_color":null,"hitokoto":false},"scroll":{"progress_bar":true,"percent":true}},"local_search":{"enable":true,"preload":true},"code_copy":{},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"obsidian"},"side_tools":{},"pjax":{"enable":true},"lazyload":{"enable":true},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.7"},"waline":{"server_url":null,"reaction":false,"version":2}},"post":{"author_label":{"enable":false,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"enable":true,"wordcount":true,"min2read":true},"img_align":"left","copyright_info":true},"version":"3.5.2"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+               ZYHWJL の BLOG
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                标签
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >
+                                分类
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                关于
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">标签</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories">分类</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+
+            <div class="article-title">
+                <span class="title-hover-animation">Java学习-疑惑之Spring与Spring Boot</span>
+            </div>
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="https://ae01.alicdn.com/kf/U062ad107ac604106bf77342c6219e2f9Z.jpg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">ZYHWJL</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            
+<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-file-pen"></i>&nbsp;
+        <span class="pc">2021-11-22 17:33:21</span>
+        <span class="mobile">2021-11-22 17:33</span>
+    </span>
+    <!-- <span class="article-date article-meta-item">
+        
+            <i class="fa-regular fa-calendar-plus"></i>&nbsp;
+        
+        <span class="pc">2021-11-22 17:33:21</span>
+        <span class="mobile">2021-11-22 17:33</span>
+    </span> -->
+    <!-- 
+        <span class="article-update-date article-meta-item">
+        <i class="fas fa-file-pen"></i>&nbsp;
+        <span class="pc">2022-12-08 00:11:09</span>
+    </span>
+     -->
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/%E5%AD%A6%E4%B9%A0/">学习</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        &gt; <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/">Java</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        &gt; <a href="/categories/%E5%AD%A6%E4%B9%A0/Java/%E7%96%91%E6%83%91/">疑惑</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E5%AD%A6%E4%B9%A0/">学习</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>2.2k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>9 分钟</span>
+        </span>
+    
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content keep-markdown-body">
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>  对于<code>Spring</code>和<code>SpringBoot</code>到底有什么区别，我听到了很多答案，刚开始迈入学习<code>SpringBoot</code>的我当时也是一头雾水，随着经验的积累、我慢慢理解了这两个框架到底有什么区别，相信对于用了<code>SpringBoot</code>很久的同学来说，还不是很理解<code>SpringBoot</code>到底和<code>Spring</code>有什么区别，看完文章中的比较，或许你有了不同的答案和看法！</p>
+<h2 id="什么是Spring"><a href="#什么是Spring" class="headerlink" title="什么是Spring"></a>什么是Spring</h2><p>  作为<code>Java</code>开发人员，大家都<code>Spring</code>都不陌生，简而言之，<code>Spring</code>框架为开发<code>Java</code>应用程序提供了全面的基础架构支持。它包含一些很好的功能，如依赖注入和开箱即用的模块，如：<code>Spring JDBC 、Spring MVC 、Spring Security、 Spring AOP 、Spring ORM 、Spring Test</code>，这些模块缩短应用程序的开发时间，提高了应用开发的效率例如，在<code>Java Web</code>开发的早期阶段，我们需要编写大量的代码来将记录插入到数据库中。但是通过使用<code>Spring JDBC</code>模块的<code>JDBCTemplate</code>，我们可以将操作简化为几行代码。</p>
+<h2 id="什么是Spring-Boot"><a href="#什么是Spring-Boot" class="headerlink" title="什么是Spring Boot"></a>什么是Spring Boot</h2><p>  <code>Spring Boot</code>基本上是<code>Spring</code>框架的扩展，它消除了设置<code>Spring</code>应用程序所需的<code>XML配置</code>，为更快，更高效的开发生态系统铺平了道路。</p>
+<p><strong><code>Spring Boot</code>中的一些特征：</strong></p>
+<ol>
+<li>创建独立的<code>Spring</code>应用。</li>
+<li>嵌入式<code>Tomcat</code>、<code>Jetty</code>、 <code>Undertow</code>容器（无需部署war文件）。</li>
+<li>提供的<code>starters</code> 简化构建配置</li>
+<li>尽可能自动配置<code>spring</code>应用。</li>
+<li>提供生产指标,例如指标、健壮检查和外部化配置</li>
+<li>完全没有代码生成和<code>XML</code>配置要求</li>
+</ol>
+<h2 id="从配置分析"><a href="#从配置分析" class="headerlink" title="从配置分析"></a>从配置分析</h2><h3 id="Maven依赖"><a href="#Maven依赖" class="headerlink" title="Maven依赖"></a>Maven依赖</h3><p><strong>首先，让我们看一下使用Spring创建Web应用程序所需的最小依赖项</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.1.0.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-webmvc<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.1.0.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>与Spring不同，Spring Boot只需要一个依赖项来启动和运行Web应用程序：</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.0.6.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>在进行构建期间，所有其他依赖项将自动添加到项目中。</strong></p>
+<p>  另一个很好的例子就是测试库。我们通常使用<code>Spring Test</code>，<code>JUnit</code>，<code>Hamcrest</code>和<code>Mockito</code>库。在<code>Spring</code>项目中，我们应该将所有这些库添加为依赖项。但是在<code>Spring Boot中</code>，我们只需要添加<code>spring-boot-starter-test</code>依赖项来自动包含这些库。</p>
+<p><strong>Spring Boot为不同的Spring模块提供了许多依赖项。一些最常用的是：</strong></p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mel"><span class="hljs-keyword">spring</span>-boot-starter-data-jpa<span class="hljs-string">`</span><br><span class="hljs-string"> `</span><span class="hljs-keyword">spring</span>-boot-starter-security<span class="hljs-string">`</span><br><span class="hljs-string"> `</span><span class="hljs-keyword">spring</span>-boot-starter-test<span class="hljs-string">`</span><br><span class="hljs-string"> `</span><span class="hljs-keyword">spring</span>-boot-starter-web<span class="hljs-string">`</span><br><span class="hljs-string"> `</span><span class="hljs-keyword">spring</span>-boot-starter-thymeleaf<br></code></pre></td></tr></table></figure>
+
+<p>有关<code>starter</code>的完整列表，请查看<a class="link"   target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/%23using-boot-starter" >Spring文档<i class="fas fa-external-link-alt"></i></a>。</p>
+<h3 id="MVC配置"><a href="#MVC配置" class="headerlink" title="MVC配置"></a>MVC配置</h3><p><strong>让我们来看一下<code>Spring</code>和<code>Spring Boot</code>创建<code>JSP Web</code>应用程序所需的配置。</strong></p>
+<p><code>Spring</code>需要定义调度程序<code>servlet</code>，映射和其他支持配置。我们可以使用 <code>web.xml</code> 文件或<code>Initializer</code>类来完成此操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyWebAppInitializer</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">WebApplicationInitializer</span> &#123;<br>  <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onStartup</span><span class="hljs-params">(ServletContext container)</span> &#123;<br>        <span class="hljs-type">AnnotationConfigWebApplicationContext</span> <span class="hljs-variable">context</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AnnotationConfigWebApplicationContext</span>();<br>        context.setConfigLocation(<span class="hljs-string">&quot;com.pingfangushi&quot;</span>);<br>          container.addListener(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ContextLoaderListener</span>(context));<br>          ServletRegistration.<span class="hljs-type">Dynamic</span> <span class="hljs-variable">dispatcher</span> <span class="hljs-operator">=</span> container<br>          .addServlet(<span class="hljs-string">&quot;dispatcher&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">DispatcherServlet</span>(context));<br>        dispatcher.setLoadOnStartup(<span class="hljs-number">1</span>);<br>        dispatcher.addMapping(<span class="hljs-string">&quot;/&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>还需要将<code>@EnableWebMvc</code>注释添加到<code>@Configuration</code>类，并定义一个视图解析器来解析从控制器返回的视图：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@EnableWebMvc</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ClientWebConfig</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">WebMvcConfigurer</span> &#123; <br>   <span class="hljs-meta">@Bean</span><br>   <span class="hljs-keyword">public</span> ViewResolver <span class="hljs-title function_">viewResolver</span><span class="hljs-params">()</span> &#123;<br>      <span class="hljs-type">InternalResourceViewResolver</span> <span class="hljs-variable">bean</span><br>        <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">InternalResourceViewResolver</span>();<br>      bean.setViewClass(JstlView.class);<br>      bean.setPrefix(<span class="hljs-string">&quot;/WEB-INF/view/&quot;</span>);<br>      bean.setSuffix(<span class="hljs-string">&quot;.jsp&quot;</span>);<br>      <span class="hljs-keyword">return</span> bean;<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>再来看<code>SpringBoot</code>一旦我们添加了<code>Web</code>启动程序，<code>Spring Boot</code>只需要在<code>application</code>配置文件中配置几个属性来完成如上操作：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml">spring.mvc.view.prefix=/WEB-INF/jsp/<br>spring.mvc.view.suffix=.jsp<br></code></pre></td></tr></table></figure>
+
+<p><strong>上面的所有Spring配置都是通过一个名为<a class="link"   target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-auto-configuration.html" >auto-configuration<i class="fas fa-external-link-alt"></i></a>的过程添加<code>Boot web starter</code>来自动包含的。</strong></p>
+<p>  这意味着<code>Spring Boot</code>将查看应用程序中存在的依赖项，属性和<code>bean</code>，并根据这些依赖项，对属性和<code>bean</code>进行配置。当然，如果我们想要添加自己的自定义配置，那么<code>Spring Boot</code>自动配置将会退回。</p>
+<h3 id="配置模板引擎"><a href="#配置模板引擎" class="headerlink" title="配置模板引擎"></a>配置模板引擎</h3><p><strong>现在我们来看下如何在Spring和Spring Boot中配置Thymeleaf模板引擎。</strong></p>
+<p>在<code>Spring</code>中，我们需要为视图解析器添加<code>thymeleaf-spring5</code>依赖项和一些配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@EnableWebMvc</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MvcWebConfig</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">WebMvcConfigurer</span> &#123;<br> <br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ApplicationContext applicationContext;<br> <br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> SpringResourceTemplateResolver <span class="hljs-title function_">templateResolver</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">SpringResourceTemplateResolver</span> <span class="hljs-variable">templateResolver</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpringResourceTemplateResolver</span>();<br>        templateResolver.setApplicationContext(applicationContext);<br>        templateResolver.setPrefix(<span class="hljs-string">&quot;/WEB-INF/views/&quot;</span>);<br>        templateResolver.setSuffix(<span class="hljs-string">&quot;.html&quot;</span>);<br>        <span class="hljs-keyword">return</span> templateResolver;<br>    &#125;<br> <br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> SpringTemplateEngine <span class="hljs-title function_">templateEngine</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">SpringTemplateEngine</span> <span class="hljs-variable">templateEngine</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SpringTemplateEngine</span>();<br>        templateEngine.setTemplateResolver(templateResolver());<br>        templateEngine.setEnableSpringELCompiler(<span class="hljs-literal">true</span>);<br>        <span class="hljs-keyword">return</span> templateEngine;<br>    &#125;<br> <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">configureViewResolvers</span><span class="hljs-params">(ViewResolverRegistry registry)</span> &#123;<br>        <span class="hljs-type">ThymeleafViewResolver</span> <span class="hljs-variable">resolver</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThymeleafViewResolver</span>();<br>        resolver.setTemplateEngine(templateEngine());<br>        registry.viewResolver(resolver);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>  <code>SpringBoot1X</code>只需要<code>spring-boot-starter-thymeleaf</code>的依赖项来启用<code>Web</code>应用程序中的<code>Thymeleaf</code>支持。<br>  但是由于<code>Thymeleaf3.0</code>中的新功能，我们必须将<code>thymeleaf-layout-dialect</code> 添加为<code>SpringBoot2X</code>Web应用程序中的依赖项。配置好依赖，我们就可以将模板添加到<code>src/main/resources/templates</code>文件夹中，<code>SpringBoot</code>将自动显示它们。</p>
+<h3 id="Spring-Security-配置"><a href="#Spring-Security-配置" class="headerlink" title="Spring Security 配置"></a>Spring Security 配置</h3><p>  为简单起见，我们使用框架默认的<code>HTTP Basic</code>身份验证。让我们首先看一下使用<code>Spring</code>启用<code>Security</code>所需的依赖关系和配置。<br>  <code>Spring</code>首先需要依赖  <code>spring-security-web</code>和<code>spring-security-config</code>  模块。接下来，  我们需要添加一个扩展<code>WebSecurityConfigurerAdapter</code>的类，并使用<code>@EnableWebSecurity</code>注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@EnableWebSecurity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomWebSecurityConfigurerAdapter</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">WebSecurityConfigurerAdapter</span> &#123;<br>  <br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">configureGlobal</span><span class="hljs-params">(AuthenticationManagerBuilder auth)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        auth.inMemoryAuthentication()<br>          .withUser(<span class="hljs-string">&quot;admin&quot;</span>)<br>            .password(passwordEncoder()<br>            .encode(<span class="hljs-string">&quot;password&quot;</span>))<br>          .authorities(<span class="hljs-string">&quot;ROLE_ADMIN&quot;</span>);<br>    &#125;<br>  <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">configure</span><span class="hljs-params">(HttpSecurity http)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        http.authorizeRequests()<br>          .anyRequest().authenticated()<br>          .and()<br>          .httpBasic();<br>    &#125;<br>     <br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> PasswordEncoder <span class="hljs-title function_">passwordEncoder</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BCryptPasswordEncoder</span>();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>  这里我们使用<code>inMemoryAuthentication</code>来设置身份验证。同样，<code>Spring Boot</code>也需要这些依赖项才能使其工作。但是我们只需要定义<code>spring-boot-starter-security</code>的依赖关系，因为这会自动将所有相关的依赖项添加到类路径中。</p>
+<p><strong><code>Spring Boot</code>中的安全配置与上面的相同</strong> 。</p>
+<h2 id="应用程序启动引导配置"><a href="#应用程序启动引导配置" class="headerlink" title="应用程序启动引导配置"></a>应用程序启动引导配置</h2><p><code>Spring</code>和<code>Spring Boot</code>中应用程序引导的基本区别在于<code>servlet</code>。<br> <code>Spring</code>使用<code>web.xml</code>  或<code>SpringServletContainerInitializer</code>作为其引导入口点。<br> <code>Spring Boot</code>仅使用<code>Servlet 3</code>功能来引导应用程序，下面让我们详细来了解下</p>
+<h3 id="Spring-引导配置"><a href="#Spring-引导配置" class="headerlink" title="Spring 引导配置"></a>Spring 引导配置</h3><p><code>Spring</code>支持传统的<code>web.xml</code>引导方式以及最新的<code>Servlet 3+</code>方法。</p>
+<p><strong>配置<code>web.xml</code>方法启动的步骤</strong></p>
+<ul>
+<li><code>Servlet</code>容器（服务器）读取<code>web.xml</code></li>
+<li><code>web.xml</code>中定义的<code>DispatcherServlet</code>由容器实例化</li>
+<li><code>DispatcherServlet</code>通过读取<code>WEB-INF / &#123;servletName&#125; -servlet.xml</code>来创建<code>WebApplicationContext</code>。最后，<code>DispatcherServlet</code>注册在应用程序上下文中定义的<code>bean</code></li>
+</ul>
+<p><strong>使用<code>Servlet 3+</code>方法的<code>Spring</code>启动步骤</strong></p>
+<p>容器搜索实现<code>ServletContainerInitializer</code>的类并执行<code>SpringServletContainerInitializer</code>找到实现所有类<code>WebApplicationInitializer``WebApplicationInitializer</code>创建具有XML或上下文<code>@Configuration</code>类<code>WebApplicationInitializer</code>创建<code>DispatcherServlet</code>与先前创建的上下文。</p>
+<h3 id="SpringBoot-引导配置"><a href="#SpringBoot-引导配置" class="headerlink" title="SpringBoot 引导配置"></a>SpringBoot 引导配置</h3><p><strong>Spring Boot应用程序的入口点是使用@SpringBootApplication注释的类</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Application</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        SpringApplication.run(Application.class, args);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>  默认情况下，<code>Spring Boot</code>使用嵌入式容器来运行应用程序。在这种情况下，<code>Spring Boot</code>使用<code>public static void main</code>入口点来启动嵌入式<code>Web</code>服务器。此外，它还负责将<code>Servlet</code>，<code>Filter</code>和<code>ServletContextInitializer bean</code>从应用程序上下文绑定到嵌入式<code>servlet</code>容器。<br> <code>Spring Boot</code>的另一个特性是它会自动扫描同一个包中的所有类或<code>Main</code>类的子包中的组件。</p>
+<p><code>Spring Boot</code>提供了将其部署到外部容器的方式。我们只需要扩展<code>SpringBootServletInitializer</code>即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * War部署</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> SanLi</span><br><span class="hljs-comment"> * Created by 2689170096@qq.com on 2018/4/15</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ServletInitializer</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">SpringBootServletInitializer</span> &#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> SpringApplicationBuilder <span class="hljs-title function_">configure</span><span class="hljs-params">(SpringApplicationBuilder application)</span> &#123;<br>        <span class="hljs-keyword">return</span> application.sources(Application.class);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onStartup</span><span class="hljs-params">(ServletContext servletContext)</span> <span class="hljs-keyword">throws</span> ServletException &#123;<br>        <span class="hljs-built_in">super</span>.onStartup(servletContext);<br>        servletContext.addListener(<span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpSessionEventPublisher</span>());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>  这里外部<code>servlet</code>容器查找在war包下的<code>META-INF</code>文件夹下MANIFEST.MF文件中定义的<code>Main-class</code>，<code>SpringBootServletInitializer</code>将负责绑定<code>Servlet</code>，<code>Filter</code>和<code>ServletContextInitializer</code>。</p>
+<h2 id="打包和部署"><a href="#打包和部署" class="headerlink" title="打包和部署"></a>打包和部署</h2><p>  最后，让我们看看如何打包和部署应用程序。这两个框架都支持<code>Maven</code>和<code>Gradle</code>等通用包管理技术。但是在部署方面，这些框架差异很大。例如，<a class="link"   target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://docs.spring.io/spring-boot/docs/current/maven-plugin/" >Spring Boot Maven插件<i class="fas fa-external-link-alt"></i></a>在<code>Maven</code>中提供<code>Spring Boot</code>支持。它还允许打包可执行<code>jar</code>或<code>war</code>包并<code>就地</code>运行应用程序。</p>
+<p>在部署环境中<code>Spring Boot</code> 对比<code>Spring</code>的一些优点包括：</p>
+<ul>
+<li>提供嵌入式容器支持</li>
+<li>使用命令<em>java -jar</em>独立运行jar</li>
+<li>在外部容器中部署时，可以选择排除依赖关系以避免潜在的jar冲突</li>
+<li>部署时灵活指定配置文件的选项</li>
+<li>用于集成测试的随机端口生成</li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>简而言之，我们可以说<code>Spring Boot</code>只是<code>Spring</code>本身的扩展，使开发，测试和部署更加方便。</p>
+<p>作者：乐傻驴<br>链接：<a class="link"   target="_blank" rel="noopener" href="https://www.jianshu.com/p/ffe5ebe17c3a" >https://www.jianshu.com/p/ffe5ebe17c3a<i class="fas fa-external-link-alt"></i></a><br>来源：简书<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+
+            </div>
+
+            
+                <div class="post-copyright-info">
+                    <div class="article-copyright-info-container">
+    <ul class="copyright-info-content">
+        <li>
+            <span class="type">本文标题</span>：<span class="content">Java学习-疑惑之Spring与Spring Boot</span>
+        </li>
+        <li>
+            <span class="type">本文作者</span>：<span class="content">ZYHWJL</span>
+        </li>
+        <li>
+            <span class="type">创建时间</span>：<span class="content">2021-11-22 17:33:21</span>
+        </li>
+        <li class="post-link">
+            <span class="type">本文链接</span>：<span class="content">2021/11/22/Java学习-疑惑之Spring与Spring Boot/</span>
+        </li>
+        <li>
+            <span class="type">版权声明</span>：<span class="content">本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！</span>
+        </li>
+    </ul>
+</div>
+
+                </div>
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/%E5%AD%A6%E4%B9%A0/">#学习</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+                <div class="article-nav">
+                    
+                        <div class="article-prev">
+                            <a class="prev"
+                               rel="prev"
+                               href="/2021/11/30/%E8%B8%A9%E5%9D%91%E8%85%BE%E8%AE%AF%E4%BA%91%E5%87%BD%E6%95%B0(SCF)/"
+                            >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                                <span class="title flex-center">
+                                <span class="post-nav-title-item">踩坑腾讯云函数(SCF)</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                            </a>
+                        </div>
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                               rel="next"
+                               href="/2021/11/18/%E5%A5%87%E7%89%B9%E7%AE%80%E6%98%93%E5%87%BA%E5%9B%BD-%E5%87%BA%E5%9B%BD%E4%BA%86%E4%BD%86%E6%B2%A1%E5%AE%8C%E5%85%A8%E5%87%BA%E5%9B%BD/"
+                            >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">奇特简易出国--出国了但没完全出国</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                                <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSpring"><span class="nav-number">2.</span> <span class="nav-text">什么是Spring</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSpring-Boot"><span class="nav-number">3.</span> <span class="nav-text">什么是Spring Boot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E9%85%8D%E7%BD%AE%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">从配置分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Maven%E4%BE%9D%E8%B5%96"><span class="nav-number">4.1.</span> <span class="nav-text">Maven依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVC%E9%85%8D%E7%BD%AE"><span class="nav-number">4.2.</span> <span class="nav-text">MVC配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E"><span class="nav-number">4.3.</span> <span class="nav-text">配置模板引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security-%E9%85%8D%E7%BD%AE"><span class="nav-number">4.4.</span> <span class="nav-text">Spring Security 配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%BC%95%E5%AF%BC%E9%85%8D%E7%BD%AE"><span class="nav-number">5.</span> <span class="nav-text">应用程序启动引导配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-%E5%BC%95%E5%AF%BC%E9%85%8D%E7%BD%AE"><span class="nav-number">5.1.</span> <span class="nav-text">Spring 引导配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SpringBoot-%E5%BC%95%E5%AF%BC%E9%85%8D%E7%BD%AE"><span class="nav-number">5.2.</span> <span class="nav-text">SpringBoot 引导配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%8C%85%E5%92%8C%E9%83%A8%E7%BD%B2"><span class="nav-number">6.</span> <span class="nav-text">打包和部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">7.</span> <span class="nav-text">结论</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            
+<footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+                <span>2020</span> -
+            
+            2022
+            
+                &nbsp;<i class="fas fa-heart icon-animate"></i>
+                &nbsp;<a href="/">ZYHWJL</a>
+            
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.5.2</a>
+        </div>
+        <div>
+			<span>站点已跌跌撞撞运行</span>
+			<span id="runtime_span1" style="color:pink"></span>
+			<span>天</span>
+			<span id="runtime_span2" style="color:pink"></span>
+			<span>时</span>
+			<span id="runtime_span3" style="color:pink"></span>
+			<span>分</span>
+			<span id="runtime_span4" style="color:pink"></span>
+			<span>秒</span>
+			 <script type="text/javascript">function show_runtime(){window.setTimeout("show_runtime()",1000);X=new Date("09/8/2020 00:00:00");Y=new Date();T=(Y.getTime()-X.getTime());M=24*60*60*1000;a=T/M;A=Math.floor(a);b=(a-A)*24;B=Math.floor(b);c=(b-B)*60;C=Math.floor((b-B)*60);D=Math.floor((c-C)*60);runtime_span1.innerHTML=A;runtime_span2.innerHTML=B;runtime_span3.innerHTML=C;runtime_span4.innerHTML=D}show_runtime();</script>
+		</div>
+        
+            <div class="icp-info info-item">
+                <a target="_blank" rel="nofollow"
+                   href="https://beian.miit.gov.cn"
+                >
+                    豫ICP备18042574号
+                </a>
+            </div>
+        
+        
+            <div class="ypyun-info info-item">
+                <a target="_blank" rel="nofollow" href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral">
+                    本站由 <img src="/images/upyun.png" height="20"> 提供 CDN 加速和云存储服务
+                </a>
+            </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/dark-light-toggle.js"></script>
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/local-search.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/code-block.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/lazyload.js"></script>
+
+
+<div class="post-scripts pjax">
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/post-helper.js"></script>
+        
+            <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/libs/anime.min.js"></script>
+        
+        
+            <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/toc.js"></script>
+        
+    
+</div>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="ZYHWJL HEXO BLOG">
+    <meta name="description" content="zyhwjl的个人Hexo博客，记录个人技术学习、日常分享">
+    <meta name="author" content="ZYHWJL">
+    
+    <title>
+        
+            远程桌面添加SSL |
+        
+        ZYHWJL の BLOG
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="https://ae01.alicdn.com/kf/U062ad107ac604106bf77342c6219e2f9Z.jpg">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/fontawesome/css/regular.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/fontawesome/css/solid.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/fontawesome/css/brands.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"blog.zyhwjl.cn","root":"/","language":"zh-CN","path":"search.json"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":false,"init_open":true},"style":{"primary_color":"#0066cc","favicon":"https://ae01.alicdn.com/kf/U062ad107ac604106bf77342c6219e2f9Z.jpg","avatar":"https://ae01.alicdn.com/kf/U062ad107ac604106bf77342c6219e2f9Z.jpg","font_size":null,"font_family":null,"hover":{"shadow":true,"scale":true},"first_screen":{"enable":true,"header_transparent":true,"background_img":"/images/bg.svg","description":"只要有你想要保护的东西，那就拔剑好了。","font_color":null,"hitokoto":false},"scroll":{"progress_bar":true,"percent":true}},"local_search":{"enable":true,"preload":true},"code_copy":{},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"obsidian"},"side_tools":{},"pjax":{"enable":true},"lazyload":{"enable":true},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.7"},"waline":{"server_url":null,"reaction":false,"version":2}},"post":{"author_label":{"enable":false,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"enable":true,"wordcount":true,"min2read":true},"img_align":"left","copyright_info":true},"version":"3.5.2"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"};
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+               ZYHWJL の BLOG
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                标签
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >
+                                分类
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                关于
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">标签</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories">分类</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">关于</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+
+            <div class="article-title">
+                <span class="title-hover-animation">远程桌面添加SSL</span>
+            </div>
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="https://ae01.alicdn.com/kf/U062ad107ac604106bf77342c6219e2f9Z.jpg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">ZYHWJL</span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            
+<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-file-pen"></i>&nbsp;
+        <span class="pc">2020-12-18 12:41:00</span>
+        <span class="mobile">2020-12-18 12:41</span>
+    </span>
+    <!-- <span class="article-date article-meta-item">
+        
+            <i class="fa-regular fa-calendar-plus"></i>&nbsp;
+        
+        <span class="pc">2020-12-18 12:41:00</span>
+        <span class="mobile">2020-12-18 12:41</span>
+    </span> -->
+    <!-- 
+        <span class="article-update-date article-meta-item">
+        <i class="fas fa-file-pen"></i>&nbsp;
+        <span class="pc">2022-12-08 00:11:09</span>
+    </span>
+     -->
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/%E6%8A%98%E8%85%BE/">折腾</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        &gt; <a href="/categories/%E6%8A%98%E8%85%BE/%E5%AE%9E%E7%94%A8/">实用</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>730 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>2 分钟</span>
+        </span>
+    
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content keep-markdown-body">
+                <p>ssl是数字证书的一种，简而言之是为了验证客户端与服务器的连接是否安全。启用ssl后，所有数据将通过加密协议传输，避免明文传输密码而带来的风险。</p>
+<h2 id="申请ssl证书"><a href="#申请ssl证书" class="headerlink" title="申请ssl证书"></a>申请ssl证书</h2><p>本部分不多赘述，网上有大量教程。不过值得一提的是，不同的客户端对不同的颁发机构信任不一。另外如果需要泛域名证书一般需要进行企业认证、付费等，或通过<a class="link"   target="_blank" rel="noopener" href="https://letsencrypt.org/" >Let’s Encrypt<i class="fas fa-external-link-alt"></i></a>免费申请，但由于相关原因部分客户端不信任该颁发机构，请自行斟酌。</p>
+<h2 id="添加ssl证书"><a href="#添加ssl证书" class="headerlink" title="添加ssl证书"></a>添加ssl证书</h2><p>本教程理论适用于windows所有操作系统，本人使用win10 20H2测试可用。–2020.12.18<br>使用mmc（命令行运行）,然后文件-&gt;添加&#x2F;删除管理单元-&gt;证书-&gt;<strong>计算机账户</strong>-&gt;本地计算机(运行此XXXXX)，然后在左侧控制台节点的证书-&gt;个人下，右键单击右侧空白-&gt;所有任务-&gt;导入，然后按提示选择刚才的.p12<code>另见补充说明</code>文件，并输入正确的密码。</p>
+<h2 id="为RDS指定证书"><a href="#为RDS指定证书" class="headerlink" title="为RDS指定证书"></a>为RDS指定证书</h2><p>注册表<code>regedit(CMD)</code>路径为 <code>计算机\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp</code><br>加入如下项<br><code>Value name: SSLCertificateSHA1Hash</code><br><code>Value type: REG_BINARY（二进制值）</code><br><code>Value data:&lt;certificate thumbprint&gt;（证书指纹）</code><br>其中Value data为可以在刚才加入的证书窗口查到的颁发下来的SSL证书的sha1指纹（20个16进制数），这里貌似不能直接复制粘贴，手动敲一遍也还好，反正不多，注意别抄错就好。</p>
+<h2 id="为证书配置权限"><a href="#为证书配置权限" class="headerlink" title="为证书配置权限"></a>为证书配置权限</h2><p>在刚才的mmc控制台，选中你的证书右键-&gt;所有任务-&gt;管理私钥，弹出的窗口和NTFS的权限管理窗口类似，在权限对话框中选添加，用户名直接输入 NETWORK SERVICE 并检查，通过后确定添加，然后保证权限中的读取为挑勾选中状态即可。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>如果证书过期或其它原因导致需要替换新的证书时，需要在重新导入证书，设置私钥访问权限设置新的fingerprint后，重启系统才能生效。</p>
+<hr>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a><strong>参考文章</strong></h2><p><a class="link"   target="_blank" rel="noopener" href="https://blog.k-res.net/archives/1893.html" >使用StartSSL(Let’s Encrypt)的免费SSL证书为Windows远程桌面RDS服务指定受信任的证书<i class="fas fa-external-link-alt"></i></a><br><a class="link"   target="_blank" rel="noopener" href="http://teenteam.biz/teenteam/blog/?p=11/" >SSL certificates with StartSSL, Microsoft IIS, Microsoft RDP and OpenSSL <i class="fas fa-external-link-alt"></i></a><br><a class="link"   target="_blank" rel="noopener" href="https://support.microsoft.com/en-us/kb/2001849" >How to Force Remote Desktop Services on Windows 7 to Use a Custom Server Authentication Certificate for TLS<i class="fas fa-external-link-alt"></i></a></p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a><strong>补充</strong></h2><p>某些证书颁发者未使用默认的.p12文件，但一般会颁发证书加私钥的形式，若没有私钥，如crt格式，则无法配置权限。如某讯云格式则需导入pfx后输入txt中的私钥。</p>
+<p>另外，经此方法配置加密传输后，在较低版本的RD客户端不信任远程电脑。实测Window 7及以上无此问题。</p>
+
+            </div>
+
+            
+                <div class="post-copyright-info">
+                    <div class="article-copyright-info-container">
+    <ul class="copyright-info-content">
+        <li>
+            <span class="type">本文标题</span>：<span class="content">远程桌面添加SSL</span>
+        </li>
+        <li>
+            <span class="type">本文作者</span>：<span class="content">ZYHWJL</span>
+        </li>
+        <li>
+            <span class="type">创建时间</span>：<span class="content">2020-12-18 12:41:00</span>
+        </li>
+        <li class="post-link">
+            <span class="type">本文链接</span>：<span class="content">2020/12/18/远程桌面添加ssl-windows-win10-RDS-远程桌面-SSL/</span>
+        </li>
+        <li>
+            <span class="type">版权声明</span>：<span class="content">本博客所有文章除特别声明外，均采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> 许可协议。转载请注明出处！</span>
+        </li>
+    </ul>
+</div>
+
+                </div>
+            
+
+            
+
+            
+                <div class="article-nav">
+                    
+                        <div class="article-prev">
+                            <a class="prev"
+                               rel="prev"
+                               href="/2021/03/10/Windows%E5%B0%86FRP%E8%AE%BE%E7%BD%AE%E4%B8%BA%E6%9C%8D%E5%8A%A1%E5%B9%B6%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/"
+                            >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                                <span class="title flex-center">
+                                <span class="post-nav-title-item">Windows将FRP设置为服务并开机自启</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                            </a>
+                        </div>
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                               rel="next"
+                               href="/2020/09/24/%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90-%E8%A7%A3%E9%94%81%E7%81%B0%E8%89%B2/"
+                            >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">网易云音乐-解锁灰色</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                                <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B3%E8%AF%B7ssl%E8%AF%81%E4%B9%A6"><span class="nav-number">1.</span> <span class="nav-text">申请ssl证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0ssl%E8%AF%81%E4%B9%A6"><span class="nav-number">2.</span> <span class="nav-text">添加ssl证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BARDS%E6%8C%87%E5%AE%9A%E8%AF%81%E4%B9%A6"><span class="nav-number">3.</span> <span class="nav-text">为RDS指定证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E8%AF%81%E4%B9%A6%E9%85%8D%E7%BD%AE%E6%9D%83%E9%99%90"><span class="nav-number">4.</span> <span class="nav-text">为证书配置权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">5.</span> <span class="nav-text">结语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">6.</span> <span class="nav-text">参考文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">7.</span> <span class="nav-text">补充</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            
+<footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+                <span>2020</span> -
+            
+            2022
+            
+                &nbsp;<i class="fas fa-heart icon-animate"></i>
+                &nbsp;<a href="/">ZYHWJL</a>
+            
+        </div>
+        
+        <div class="theme-info info-item">
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.5.2</a>
+        </div>
+        <div>
+			<span>站点已跌跌撞撞运行</span>
+			<span id="runtime_span1" style="color:pink"></span>
+			<span>天</span>
+			<span id="runtime_span2" style="color:pink"></span>
+			<span>时</span>
+			<span id="runtime_span3" style="color:pink"></span>
+			<span>分</span>
+			<span id="runtime_span4" style="color:pink"></span>
+			<span>秒</span>
+			 <script type="text/javascript">function show_runtime(){window.setTimeout("show_runtime()",1000);X=new Date("09/8/2020 00:00:00");Y=new Date();T=(Y.getTime()-X.getTime());M=24*60*60*1000;a=T/M;A=Math.floor(a);b=(a-A)*24;B=Math.floor(b);c=(b-B)*60;C=Math.floor((b-B)*60);D=Math.floor((c-C)*60);runtime_span1.innerHTML=A;runtime_span2.innerHTML=B;runtime_span3.innerHTML=C;runtime_span4.innerHTML=D}show_runtime();</script>
+		</div>
+        
+            <div class="icp-info info-item">
+                <a target="_blank" rel="nofollow"
+                   href="https://beian.miit.gov.cn"
+                >
+                    豫ICP备18042574号
+                </a>
+            </div>
+        
+        
+            <div class="ypyun-info info-item">
+                <a target="_blank" rel="nofollow" href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral">
+                    本站由 <img src="/images/upyun.png" height="20"> 提供 CDN 加速和云存储服务
+                </a>
+            </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/dark-light-toggle.js"></script>
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/local-search.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/code-block.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/lazyload.js"></script>
+
+
+<div class="post-scripts pjax">
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/post-helper.js"></script>
+        
+            <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/libs/anime.min.js"></script>
+        
+        
+            <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/toc.js"></script>
+        
+    
+</div>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.5.2/source/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
